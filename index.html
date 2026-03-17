@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio</title>
+
+<link href="https://fonts.cdnfonts.com/css/akira-expanded" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Akira Expanded',sans-serif;
+}
+
+body{
+  background:#000;
+  color:#fff;
+}
+
+#bg{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:-1;
+}
+
+.container{
+  width:90%;
+  max-width:1200px;
+  margin:auto;
+}
+
+header{ padding:40px 0; }
+
+.hero{ padding:100px 0 60px; }
+
+.hero h2{ font-size:42px; }
+
+.about{
+  max-width:700px;
+  padding-bottom:80px;
+}
+
+.about p{
+  font-size:12px;
+  line-height:1.8;
+  opacity:0.6;
+}
+
+.works{ padding:60px 0; }
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+}
+
+.card{
+  border:1px solid #222;
+  overflow:hidden;
+}
+
+.card iframe{
+  width:100%;
+  border:none;
+}
+
+.landscape iframe{ aspect-ratio:16/9; }
+.portrait iframe{ aspect-ratio:9/16; }
+
+.card p{
+  padding:10px;
+  font-size:11px;
+  opacity:0.6;
+}
+
+.contact{
+  text-align:center;
+  padding:80px 0;
+}
+
+.socials{
+  display:flex;
+  justify-content:center;
+  gap:20px;
+}
+
+.socials a{
+  width:50px;
+  height:50px;
+  border:1px solid #fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  color:#fff;
+  font-size:12px;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="container">
+
+<header>
+  <h1>SREEHARI <br><span>RATHEESH</span></h1>
+</header>
+
+<section class="hero">
+  <h2>VIDEO EDITOR & VFX ARTIST</h2>
+</section>
+
+<section class="about">
+  <h3>Hey, I’m Sreehari</h3>
+  <p>
+    I create cinematic visuals with a focus on clean edits and strong storytelling.
+    My work includes speed ramps, colour grading, and 3D animation.
+    I mainly use After Effects and Blender to bring ideas to life.
+  </p>
+</section>
+
+<section class="works">
+<div class="grid">
+
+  <div class="card landscape">
+    <iframe src="https://www.youtube.com/embed/Bal7AN_LrUU?autoplay=1&mute=1&controls=0&loop=1&playlist=Bal7AN_LrUU"></iframe>
+    <p>Short film and VFX</p>
+  </div>
+
+  <div class="card portrait">
+    <iframe src="https://www.youtube.com/embed/p7xe9uJrgCI?autoplay=1&mute=1&controls=0&loop=1&playlist=p7xe9uJrgCI"></iframe>
+    <p>Reel</p>
+  </div>
+
+  <div class="card landscape">
+    <iframe src="https://www.youtube.com/embed/Fle2fo9gW5g?autoplay=1&mute=1&controls=0&loop=1&playlist=Fle2fo9gW5g"></iframe>
+    <p>Color Grade</p>
+  </div>
+
+  <div class="card portrait">
+    <iframe src="https://www.youtube.com/embed/VGTSBOWoxBI?autoplay=1&mute=1&controls=0&loop=1&playlist=VGTSBOWoxBI"></iframe>
+    <p>More Reel</p>
+  </div>
+
+</div>
+</section>
+
+<section class="contact">
+  <div class="socials">
+    <a href="https://instagram.com/5reehary" target="_blank">IG</a>
+    <a href="mailto:sreehari.r8055@gmail.com">MAIL</a>
+    <a href="https://wa.me/917558055894" target="_blank">PH</a>
+  </div>
+</section>
+
+</div>
+
+<footer style="text-align:center; padding:15px; font-size:13px; color:#888;">
+  <div style="font-family:'DotGothic16', monospace; letter-spacing:2px;">
+    &copy; Sreehari Ratheesh
+  </div>
+  <div style="font-size:11px; color:#666; margin-top:6px;">
+    All content on this site is owned by Sreehari Ratheesh.
+  </div>
+</footer>
+
+<!-- INTERACTIVE ANIMATION -->
+<script>
+const canvas = document.getElementById("bg");
+const ctx = canvas.getContext("2d");
+
+let dpr = window.devicePixelRatio || 1;
+
+function resize(){
+  canvas.width = window.innerWidth * dpr;
+  canvas.height = window.innerHeight * dpr;
+  canvas.style.width = window.innerWidth + "px";
+  canvas.style.height = window.innerHeight + "px";
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+resize();
+window.addEventListener("resize", resize);
+
+const count = 60;
+const maxDist = 100;
+
+let particles = Array.from({length:count}, ()=>({
+  x: Math.random()*window.innerWidth,
+  y: Math.random()*window.innerHeight,
+  vx:(Math.random()-0.5)*0.5,
+  vy:(Math.random()-0.5)*0.5
+}));
+
+let mouse = {x:null,y:null,active:false};
+let influence = 0;
+
+window.addEventListener("mousemove", e=>{
+  mouse.x=e.clientX;
+  mouse.y=e.clientY;
+  mouse.active=true;
+  influence=1;
+});
+
+window.addEventListener("touchmove", e=>{
+  mouse.x=e.touches[0].clientX;
+  mouse.y=e.touches[0].clientY;
+  mouse.active=true;
+  influence=1;
+});
+
+window.addEventListener("mouseleave", ()=>{
+  mouse.active=false;
+});
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  influence*=0.95;
+
+  for(let i=0;i<particles.length;i++){
+    let p=particles[i];
+
+    p.x+=p.vx;
+    p.y+=p.vy;
+
+    if(p.x<0||p.x>window.innerWidth) p.vx*=-1;
+    if(p.y<0||p.y>window.innerHeight) p.vy*=-1;
+
+    ctx.fillStyle="rgba(255,255,255,0.8)";
+    ctx.fillRect(p.x,p.y,1.5,1.5);
+
+    for(let j=i+1;j<particles.length;j++){
+      let dx=p.x-particles[j].x;
+      let dy=p.y-particles[j].y;
+      let dist=dx*dx+dy*dy;
+
+      if(dist<maxDist*maxDist){
+        ctx.strokeStyle=`rgba(255,255,255,${(1-dist/(maxDist*maxDist))*0.3})`;
+        ctx.beginPath();
+        ctx.moveTo(p.x,p.y);
+        ctx.lineTo(particles[j].x,particles[j].y);
+        ctx.stroke();
+      }
+    }
+
+    if(mouse.active){
+      let dx=p.x-mouse.x;
+      let dy=p.y-mouse.y;
+      let d=Math.sqrt(dx*dx+dy*dy);
+
+      if(d<120){
+        ctx.strokeStyle=`rgba(255,255,255,${0.6*influence})`;
+        ctx.beginPath();
+        ctx.moveTo(p.x,p.y);
+        ctx.lineTo(mouse.x,mouse.y);
+        ctx.stroke();
+      }
+    }
+  }
+
+  requestAnimationFrame(draw);
+}
+
+draw();
+</script>
+
+</body>
+</html>
